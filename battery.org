@@ -1,0 +1,1655 @@
+#+title: Battery Emacs theme
+
+* main package
+
+#+begin_src elisp :tangle battery.el :noweb yes
+;;; battery.el --- Warm and vibrant color scheme for Emacs -*- lexical-binding: t; -*-
+;;
+; Copyright (C) 2022 Guilherme Machado
+;;
+;; Author: Guilherme Machado <https://github.com/goiabae>
+;; Maintainer: Guilherme Machado <goiabae@protonmail.com>
+;; Created: 02 Feb 2022
+;; Version: 0.0.2
+;; Homepage: https://github.com/goiabae/emacs-theme-battery
+;; Package-Requires: ((autothemer "0.2") (dash))
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
+
+;;  Template for a warm and vibrant color scheme inspired by the famous
+;;  Gruvbox, from Vim.
+
+;;; Code:
+
+(require 'autothemer)
+
+(defmacro battery-deftheme (name description is-light)
+  `(autothemer-deftheme
+    ,name
+    ,description
+    ,(append
+      '((((class color)
+          (min-colors #xFFFFFF)))
+
+        (neutral0  "#101010")
+        (neutral1  "#191919")
+        (neutral2  "#262524")
+        (neutral3  "#353231")
+        (neutral4  "#403c3a")
+        (neutral5  "#504845")
+        (neutral6  "#635852")
+        (neutral7  "#7b6c61")
+        (neutral8  "#958172")
+        (neutral9  "#a89984")
+        (neutral10 "#bdae93")
+        (neutral11 "#d2c3a5")
+        (neutral12 "#e7d8b3")
+        (neutral13 "#f2e4ba")
+        (neutral14 "#faedc9")
+        (neutral15 "#fef5d8"))
+
+      (let ((symbols
+             (mapcar
+              (lambda (n)
+                (mapcar
+                 (lambda (i) (intern (concat n (number-to-string i))))
+                 (-iota 16)))
+              (list "grey" "neutral"))))
+        (-zip-with #'list
+                   (car symbols)
+                   (if is-light (reverse (cadr symbols)) (cadr symbols))))
+
+      '((bg grey1)
+        (fg grey13)
+
+        (darker-red      "#67191b")
+        (darker-orange   "#572e1a")
+        (darker-yellow   "#423818")
+        (darker-olive    "#302f16")
+        (darker-green    "#183815")
+        (darker-cyan     "#1a2d1e")
+        (darker-purple   "#462929")
+
+        (dark-red        "#be241e")
+        (dark-orange     "#ac4003")
+        (dark-yellow     "#a57109")
+        (dark-olive      "#746f06")
+        (dark-green      "#24601c")
+        (dark-cyan       "#2b5434")
+        (dark-purple     "#a63445")
+
+        (red             "#e83437")
+        (orange          "#d6580e")
+        (yellow          "#d09420")
+        (olive           "#98952a")
+        (green           "#3f9f32")
+        (cyan            "#689e69")
+        (purple          "#b16262")
+
+        (light-red       "#fc5356")
+        (light-orange    "#fc823c")
+        (light-yellow    "#fac240")
+        (light-olive     "#b5ba25")
+        (light-green     "#5ac04e")
+        (light-cyan      "#8ec07c")
+        (light-purple    "#ed8585")
+
+        (lighter-red     "#fca39c")
+        (lighter-orange  "#fca765")
+        (lighter-yellow  "#edd76d")
+        (lighter-olive   "#dfe26c")
+        (lighter-green   "#a2ea98")
+        (lighter-cyan    "#aed8a0")
+        (lighter-purple  "#f7b4b4"))
+
+      (let ((colors '(red orange yellow olive green cyan purple))
+            (abs-shades '(darker dark light lighter))
+            (rel-shades '(lower low high higher)))
+        (let ((rel-colors
+               (mapcar (lambda (x) (mapcar (lambda (y) (intern (concat (symbol-name x) "-" (symbol-name y)))) colors)) rel-shades))
+              (abs-colors
+               (mapcar (lambda (x) (mapcar (lambda (y) (intern (concat (symbol-name x) "-" (symbol-name y)))) colors)) abs-shades)))
+          (-zip-with #'list
+            (-flatten rel-colors)
+            (-flatten
+              (if is-light (reverse abs-colors) abs-colors))))))
+
+    (
+      <<faces>>
+     )
+    (custom-theme-set-variables
+     (quote ,name)
+     `(ansi-color-names-vector
+       [,red
+        ,olive
+        ,orange
+        ,purple
+        ,yellow
+        ,green
+        ,cyan]))))
+
+(provide 'battery)
+;;; battery.el ends here
+#+end_src
+
+* light variant
+
+#+begin_src elisp :tangle battery-light-theme.el
+;;; battery-light-theme.el --- Warm, dark and vibrant color scheme for Emacs -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) 2022 Guilherme Machado
+;;
+;; Author: Guilherme Machado <https://github.com/goiabae>
+;; Maintainer: Guilherme Machado <goiabae@protonmail.com>
+;; Created: 02 Feb 2022
+;; Version: 0.0.2
+;; Homepage: https://github.com/goiabae/emacs-theme-battery
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
+
+;;  A warm, light and vibrant color scheme inspired by the famous
+;;  Gruvbox, from Vim.
+
+;;; Code:
+
+(require 'battery)
+
+(battery-deftheme battery-light "Warm, light and vibrant colour theme" t)
+
+(provide-theme 'battery-light)
+;;; battery-light-theme.el ends here
+#+end_src
+
+* dark variant
+
+#+begin_src elisp :tangle battery-dark-theme.el
+;;; battery-dark-theme.el --- Warm, dark and vibrant color scheme for Emacs -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) 2022 Guilherme Machado
+;;
+;; Author: Guilherme Machado <https://github.com/goiabae>
+;; Maintainer: Guilherme Machado <goiabae@protonmail.com>
+;; Created: 02 Feb 2022
+;; Version: 0.0.2
+;; Homepage: https://github.com/goiabae/emacs-theme-battery
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
+
+;;  A warm, dark and vibrant color scheme inspired by the famous
+;;  Gruvbox, from Vim.
+
+;;; Code:
+
+(require 'battery)
+
+(battery-deftheme battery-dark "Warm, dark and vibrant colour theme" nil)
+
+(provide-theme 'battery-dark)
+;;; battery-dark-theme.el ends here
+#+end_src
+
+* faces
+
+#+name: faces
+#+begin_src elisp :noweb yes
+;; Basic faces
+(default (:background bg :foreground fg))
+(button (:underline t :weight 'bold :foreground yellow))
+(cursor (:background fg))
+(mode-line (:background neutral10 :foreground neutral2 :box (:line-width 1 :color neutral15 :style 'released-button)))
+(mode-line-active (:inherit 'mode-line))
+(mode-line-inactive (:inherit 'mode-line))
+(fringe (:background bg))
+(hl-line (:background grey0))
+(region (:background grey5)) ;; selection
+(secondary-selection (:background grey6))
+(minibuffer-prompt (:background bg :foreground high-green :bold t))
+(vertical-border (:foreground grey7))
+(internal-border (:background grey7))
+(window-divider (:foreground grey8))
+(link (:foreground high-yellow :underline t))
+(link-visited (:foreground lighter-purple :inherit 'link))
+(shadow (:foreground grey8))
+
+(error (:foreground red :bold t))
+(success (:foreground high-olive :bold t))
+(warning (:foreground high-yellow :bold t))
+
+(alert-low-face (:foreground high-cyan))
+(trailing-whitespace (:background red))
+(escape-glyph (:foreground cyan))
+(header-line (:background grey5 :foreground grey13 :box nil :inherit nil))
+(highlight (:background grey4 :foreground fg))
+(homoglyph (:foreground yellow))
+(match (:foreground grey0 :background cyan))
+
+(bold (:weight 'bold))
+(italic (:slant 'italic))
+(bold-italic (:weight 'bold :slant 'italic))
+(underline (:underline t))
+
+;; Font lock (syntax highlighting)
+(font-lock-builtin-face (:foreground high-cyan))
+(font-lock-constant-face (:foreground high-purple :bold nil))
+(font-lock-comment-face (:foreground grey8))
+(font-lock-function-name-face (:foreground high-yellow :bold nil))
+(font-lock-keyword-face (:foreground high-red))
+(font-lock-string-face (:foreground high-olive))
+(font-lock-variable-name-face (:foreground high-yellow))
+(font-lock-type-face (:foreground high-orange))
+(font-lock-warning-face (:foreground high-red :bold t))
+(font-lock-preprocessor-face (:foreground high-cyan))
+(font-lock-negation-char-face (:foreground high-red))
+(font-lock-comment-delimiter-face (:inherit 'font-lock-comment-face))
+(font-lock-doc-face (:inherit 'font-lock-string-face))
+(font-lock-doc-markup-face (:inherit 'font-lock-constant-face))
+(font-lock-regexp-grouping-backslash (:inherit 'bold))
+(font-lock-regexp-grouping-construct (:inherit 'bold))
+(font-lock-misc-punctuation-face (:inherit 'font-lock-punctuation-face))
+(font-lock-delimiter-face (:inherit 'font-lock-punctuation-face))
+(font-lock-bracket-face (:inherit 'font-lock-punctuation-face))
+(font-lock-punctuation-face nil)
+(font-lock-property-use-face (:inherit 'font-lock-property-name-face))
+(font-lock-property-name-face (:inherit 'font-lock-variable-name-face))
+(font-lock-operator-face (:inherit 'font-lock-builtin-face))
+(font-lock-number-face (:inherit 'font-lock-constant-face))
+(font-lock-escape-face (:inherit 'font-lock-regexp-grouping-backslash))
+(font-lock-regexp-face (:inherit 'font-lock-string-face))
+(font-lock-variable-use-face (:inherit 'font-lock-variable-name-face))
+(font-lock-function-call-face (:inherit 'font-lock-function-name-face))
+
+;; jupyter-repl
+(jupyter-repl-input-prompt (:foreground olive))
+(jupyter-repl-output-prompt (:foreground red))
+
+;; hi-lock
+(hi-yellow (:foreground bg :background lighter-olive))
+(hi-pink (:foreground bg :background lighter-purple))
+(hi-green (:foreground bg :background lighter-green))
+(hi-blue (:foreground bg :background neutral15))
+(hi-salmon (:foreground bg :background lighter-orange))
+(hi-aquamarine (:foreground bg :background lighter-green))
+(hi-black-b (:weight 'bold))
+(hi-blue-b (:weight 'bold :foreground neutral4))
+(hi-green-b (:weight 'bold :foreground light-green))
+(hi-red-b (:weight 'bold :foreground red))
+(hi-black-hb (:height 1.67 :weight 'bold :inherit 'variable-pitch))
+
+;; lsp
+(lsp-face-highlight-textual (:background grey6))
+(lsp-face-highlight-read (:background grey6))
+(lsp-face-highlight-write (:background grey6))
+(lsp-face-semhl-constant (:foreground cyan))
+(lsp-face-semhl-deprecated (:foreground cyan))
+(lsp-face-semhl-enummember (:foreground cyan))
+(lsp-face-semhl-field (:foreground cyan))
+(lsp-face-semhl-field-static (:foreground cyan))
+(lsp-face-semhl-function (:foreground cyan))
+(lsp-face-semhl-method (:foreground cyan))
+(lsp-face-semhl-namespace (:foreground cyan))
+(lsp-face-semhl-preprocessor (:foreground cyan))
+(lsp-face-semhl-static-method (:foreground cyan))
+(lsp-face-semhl-type-class (:foreground cyan))
+(lsp-face-semhl-type-enum (:foreground cyan))
+(lsp-face-semhl-type-primitive (:foreground cyan))
+(lsp-face-semhl-type-template (:foreground cyan))
+(lsp-face-semhl-type-typedef (:foreground cyan))
+(lsp-face-semhl-variable (:foreground cyan))
+(lsp-face-semhl-variable-local (:foreground cyan))
+(lsp-face-semhl-variable-parameter (:foreground cyan))
+(lsp-lens-face (:foreground cyan))
+(lsp-lens-mouse-face (:foreground cyan))
+(lsp-ui-doc-background (:foreground cyan))
+(lsp-ui-doc-header (:foreground cyan))
+(lsp-ui-doc-url (:foreground cyan))
+(lsp-ui-peek-filename (:foreground cyan))
+(lsp-ui-peek-footer (:foreground cyan))
+(lsp-ui-peek-header (:foreground cyan))
+(lsp-ui-peek-highlight (:foreground cyan))
+(lsp-ui-peek-line-number (:foreground cyan))
+(lsp-ui-peek-list (:foreground cyan))
+(lsp-ui-peek-peek (:foreground cyan))
+(lsp-ui-peek-selection (:foreground cyan))
+(lsp-ui-sideline-code-action (:foreground cyan))
+(lsp-ui-sideline-current-symbol (:foreground cyan))
+(lsp-ui-sideline-symbol (:foreground cyan))
+(lsp-ui-sideline-symbol-info (:foreground cyan))
+
+;; flymake
+(flymake-end-of-line-diagnostics-face (:height 0.85 :box (:line-width -1)))
+
+(flymake-error (:underline (:style 'wave :color high-red)))
+(flymake-error-echo (:inherit 'compilation-error))
+(flymake-error-echo-at-eol (:inherit ('flymake-end-of-line-diagnostics-face 'compilation-error)))
+
+(flymake-warning (:underline (:style 'wave :color high-cyan)))
+(flymake-warning-echo (:inherit 'compilation-warning))
+(flymake-warning-echo-at-eol (:inherit ('flymake-end-of-line-diagnostics-face 'compilation-warning)))
+
+(flymake-note (:underline (:style 'wave :color high-olive)))
+(flymake-note-echo (:inherit 'flymake-note))
+(flymake-note-echo-at-eol (:inherit ('flymake-end-of-line-diagnostics-face 'flymake-note)))
+
+;; flyspell
+(flyspell-incorrect (:underline (:style 'wave :color red)))
+
+;; diff
+(diff-header (:extend t :background grey3))
+(diff-hunk-header (:inherit 'diff-header))
+(diff-file-header (:weight 'bold :extend t :background grey4))
+(diff-changed nil)
+(diff-removed (:extend t :background lower-red   :inherit 'diff-changed))
+(diff-added (:extend t :background lower-green :inherit 'diff-changed))
+(diff-refine-changed nil)
+(diff-refine-removed (:background low-red   :inherit 'diff-refine-changed))
+(diff-refine-added (:background low-green :inherit 'diff-refine-changed))
+
+(diff-index (:inherit 'diff-file-header))
+(diff-changed-unspecified (:extend t :background neutral3 :inherit 'diff-changed))
+(diff-indicator-removed (:foreground dark-red :inherit 'diff-removed))
+(diff-indicator-added (:foreground green :inherit 'diff-added))
+(diff-indicator-changed (:foreground light-olive :inherit 'diff-changed))
+(diff-function (:inherit 'diff-header))
+(diff-context (:extend t))
+(diff-nonexistent (:inherit 'diff-file-header))
+(diff-error (:weight 'bold :foreground red :background bg))
+
+;; mini-modeline
+(mini-modeline-mode-line (:background low-olive :height 0.14 :box nil))
+
+;; isearch
+(isearch (:foreground grey13 :background lower-purple))
+(isearch-fail (:foreground grey13 :background lower-red))
+(isearch-group-1 (:foreground high-red :background low-purple))
+(isearch-group-2 (:foreground high-red :background low-purple))
+(lazy-highlight (:background grey4))
+
+(query-replace (:inherit 'isearch))
+
+(debugger-running (:weight 'bold :foreground high-green))
+(debugger-not-running (:inherit 'font-lock-warning-face))
+
+;; ansi-color
+(ansi-color-black (:foreground bg :background bg))
+(ansi-color-red (:foreground red    :background red))
+(ansi-color-green (:foreground olive  :background olive))
+(ansi-color-yellow (:foreground yellow :background yellow))
+(ansi-color-blue (:foreground orange :background orange))
+(ansi-color-magenta (:foreground purple :background purple))
+(ansi-color-cyan (:foreground cyan   :background cyan))
+(ansi-color-white (:foreground neutral15 :background neutral15))
+
+(ansi-color-bright-black (:foreground grey10 :background neutral5))
+(ansi-color-bright-red (:foreground light-red    :background light-red))
+(ansi-color-bright-green (:foreground light-olive  :background light-olive))
+(ansi-color-bright-yellow (:foreground light-yellow :background light-yellow))
+(ansi-color-bright-blue (:foreground light-orange :background light-orange))
+(ansi-color-bright-magenta (:foreground light-purple :background light-purple))
+(ansi-color-bright-cyan (:foreground light-cyan   :background light-cyan))
+(ansi-color-bright-white (:foreground neutral15 :background neutral15))
+
+(ansi-color-bold (:inherit ('quote 'bold)))
+(ansi-color-faint (:weight 'light))
+(ansi-color-italic (:inherit ('quote 'italic)))
+(ansi-color-underline (:inherit ('quote 'underline)))
+(ansi-color-slow-blink (:box (:line-width -1)))
+(ansi-color-fast-blink (:box (:line-width -1)))
+(ansi-color-inverse (:inverse-video t))
+
+;; message
+(message-header-other (:foreground orange))
+(message-header-to (:weight 'bold :foreground fg))
+(message-header-subject (:foreground fg))
+(message-header-name (:foreground light-yellow))
+
+;; sh
+(sh-heredoc (:foreground high-olive))
+(sh-quoted-exec (:foreground high-purple))
+(sh-escaped-newline (:inherit 'font-lock-string-face))
+
+;; faces.el
+(mouse nil)
+(menu nil)
+(border nil)
+(scroll-bar nil)
+(child-frame-border nil)
+(tab-line (:height 0.9 :foreground bg :background neutral15 :inherit 'variable-pitch))
+(tool-bar (:box (:line-width 1 :style 'released-button) :foreground bg :background neutral11))
+
+;; w3m
+(w3m-form-inactive (:underline t :foreground neutral10))
+(w3m-form (:underline t :foreground red))
+(w3m-session-selected (:weight 'bold :underline t :foreground neutral15))
+(w3m-session-select (:foreground neutral15))
+(w3m-error (:weight 'bold :foreground lighter-purple))
+(w3m-header-line-background (:background neutral3))
+(w3m-header-line-content (:foreground lighter-yellow :background neutral3))
+(w3m-header-line-title (:foreground lighter-cyan :background neutral3))
+(w3m-unsafe-url-warning (:foreground bg :background lighter-olive))
+(w3m-insert (:foreground light-purple))
+(w3m-strike-through (:strike-through t))
+(w3m-underline (:underline t))
+(w3m-italic (:slant 'italic))
+(w3m-bold (:weight 'bold))
+(w3m-history-current-url (:weight 'bold :underline t :extend t :foreground neutral9 :background neutral6))
+(w3m-image-anchor (:background dark-green))
+(w3m-image (:foreground lighter-green))
+(w3m-current-anchor (:underline (:style 'wave)))
+(w3m-arrived-anchor (:weight 'bold :underline t :foreground neutral9))
+(w3m-anchor (:weight 'bold :underline t :foreground high-yellow))
+(w3m-tab-mouse (:box (:line-width -1 :style 'released-button) :foreground neutral15 :background neutral11))
+(w3m-tab-selected-background (:foreground bg :background neutral9))
+(w3m-tab-background (:foreground bg :background neutral9))
+(w3m-tab-selected-retrieving (:box (:line-width -1 :style 'released-button) :foreground red :background neutral15))
+(w3m-tab-selected (:box (:line-width -1 :style 'released-button) :foreground bg :background neutral15))
+(w3m-tab-unselected-unseen (:box (:line-width -1 :style 'released-button) :foreground neutral3 :background neutral10))
+(w3m-tab-unselected-retrieving (:box (:line-width -1 :style 'released-button) :foreground orange :background neutral10))
+(w3m-tab-unselected (:box (:line-width -1 :style 'released-button) :foreground neutral3 :background neutral10))
+(w3m-form-button-pressed (:box (:line-width 2 :style 'pressed-button) :foreground bg :background neutral11))
+(w3m-form-button-mouse (:box (:line-width 2 :style 'released-button) :foreground bg :background lighter-green))
+(w3m-form-button (:box (:line-width 2 :style 'released-button) :foreground bg :background neutral11))
+
+;; tab-line
+(tab-line-close-highlight (:foreground red))
+(tab-line-highlight (:box (:line-width 1 :style 'released-button) :foreground bg :background neutral15))
+(tab-line-tab-current (:background neutral15 :inherit 'tab-line-tab))
+(tab-line-tab-group (:box nil :inherit 'tab-line))
+(tab-line-tab-modified (:inherit 'font-lock-doc-face))
+(tab-line-tab-special (:weight 'normal :slant 'italic))
+(tab-line-tab-inactive-alternate (:background neutral9 :inherit 'tab-line-tab-inactive))
+(tab-line-tab-inactive (:background neutral11 :inherit 'tab-line-tab))
+(tab-line-tab (:box (:line-width 1 :style 'released-button) :inherit 'tab-line))
+
+;; ediff
+(ediff-odd-diff-Ancestor (:extend t :background neutral6))
+(ediff-odd-diff-C (:extend t :background neutral10))
+(ediff-odd-diff-B (:extend t :background neutral11))
+(ediff-odd-diff-A (:extend t :background neutral10))
+(ediff-even-diff-Ancestor (:extend t :background neutral10))
+(ediff-even-diff-C (:extend t :background neutral11))
+(ediff-even-diff-B (:extend t :background neutral10))
+(ediff-even-diff-A (:extend t :background neutral11))
+(ediff-fine-diff-Ancestor (:background cyan))
+(ediff-fine-diff-C (:background lighter-olive))
+(ediff-fine-diff-B (:background lighter-green))
+(ediff-fine-diff-A (:background lighter-purple))
+(ediff-current-diff-Ancestor (:extend t :background neutral15))
+(ediff-current-diff-C (:extend t :background lighter-olive))
+(ediff-current-diff-B (:extend t :background lighter-cyan))
+(ediff-current-diff-A (:extend t :background lighter-purple))
+
+;; git-commit
+(git-commit-comment-action (:inherit 'bold))
+(git-commit-comment-file (:inherit 'git-commit-pseudo-header))
+(git-commit-comment-heading (:inherit 'git-commit-known-pseudo-header))
+(git-commit-comment-detached (:inherit 'git-commit-comment-branch-local))
+(git-commit-comment-branch-remote (:inherit 'font-lock-variable-name-face))
+(git-commit-comment-branch-local (:inherit 'font-lock-variable-name-face))
+(git-commit-known-pseudo-header (:inherit 'font-lock-keyword-face))
+(git-commit-pseudo-header (:inherit 'font-lock-string-face))
+(git-commit-keyword (:inherit 'font-lock-string-face))
+(git-commit-nonempty-second-line (:inherit 'font-lock-warning-face))
+(git-commit-overlong-summary (:inherit 'font-lock-warning-face))
+(git-commit-summary (:inherit 'font-lock-type-face))
+
+;; smerge
+(smerge-base (:extend t :background lighter-olive))
+(smerge-lower (:extend t :background lighter-cyan))
+(smerge-markers (:extend t :background neutral15))
+(smerge-refined-added (:background lighter-green :inherit 'smerge-refined-change))
+(smerge-refined-changed nil)
+(smerge-refined-removed (:background lighter-purple :inherit 'smerge-refined-change))
+(smerge-upper (:extend t :background lighter-purple))
+
+;; add-log
+(change-log-acknowledgment (:inherit 'font-lock-comment-face))
+(change-log-conditionals (:inherit 'font-lock-variable-name-face))
+(change-log-date (:inherit 'font-lock-string-face))
+(change-log-email (:inherit 'font-lock-variable-name-face))
+(change-log-file (:inherit 'font-lock-function-name-face))
+(change-log-function (:inherit 'font-lock-variable-name-face))
+(change-log-list (:inherit 'font-lock-keyword-face))
+(change-log-name (:inherit 'font-lock-constant-face))
+
+;; rest
+(Info-quoted (:inherit 'fixed-pitch-serif))
+(abbrev-table-name (:inherit 'font-lock-function-name-face))
+(browse-url-button (:inherit 'link))
+(buffer-menu-buffer (:weight 'bold))
+(c-annotation-face (:inherit 'font-lock-constant-face))
+(comint-highlight-input (:weight 'bold))
+(comint-highlight-prompt (:inherit 'minibuffer-prompt))
+(completions-highlight (:inherit 'highlight))
+(confusingly-reordered (:underline (:style 'wave :color red)))
+(diary (:foreground red))
+(edebug-disabled-breakpoint (:extend t :background dark-cyan))
+(edebug-enabled-breakpoint (:inherit 'highlight))
+(edmacro-label (:foreground neutral1 :inherit 'bold))
+(eldoc-highlight-function-argument (:inherit 'bold))
+(elisp-shorthand-font-lock-face (:foreground lighter-cyan :inherit 'font-lock-keyword-face))
+(ert-test-result-expected (:background lighter-green))
+(ert-test-result-unexpected (:background red))
+(escape-glyph (:foreground higher-purple))
+(ffap (:inherit 'highlight))
+(file-name-shadow (:inherit 'shadow))
+(glyphless-char (:height 0.6))
+(header-line-highlight (:inherit 'mode-line-highlight))
+(icon (:underline nil))
+(icon-button (:box (:line-width '(3 . -1) :color neutral4 :style 'flat-button) :foreground neutral0 :background neutral8 :inherit 'icon))
+(log-edit-header (:inherit 'font-lock-keyword-face))
+(log-edit-headers-separator (:height 0.1 :extend t :inverse-video t))
+(log-edit-summary (:inherit 'font-lock-function-name-face))
+(log-edit-unknown-header (:inherit 'font-lock-comment-face))
+(log-view-commit-body (:inherit 'font-lock-comment-face))
+(log-view-file (:weight 'bold :extend t :background neutral10))
+(log-view-message (:extend t :background neutral15))
+(mm-command-output (:foreground green))
+(mm-uu-extract (:extend t :foreground neutral15 :background dark-green))
+(mouse-drag-and-drop-region (:inherit 'region))
+(read-multiple-choice-face (:weight 'bold :inherit 'underline))
+(rmail-header-name (:inherit 'font-lock-function-name-face))
+(rmail-highlight (:inherit 'highlight))
+(shell-highlight-undef-alias-face (:inherit ('quote 'font-lock-variable-name-face)))
+(shell-highlight-undef-defined-face (:inherit ('quote 'font-lock-function-name-face)))
+(shell-highlight-undef-undefined-face (:inherit ('quote 'font-lock-warning-face)))
+(tabulated-list-fake-header (:weight 'bold :underline t :overline t))
+(textsec-suspicious (:weight 'bold :foreground neutral15 :background red))
+(tooltip (:foreground bg :background neutral15 :inherit 'variable-pitch))
+(variable-pitch-text (:height 1.1 :inherit 'variable-pitch))
+(vc-git-log-edit-summary-max-warning (:inherit 'error))
+(vc-git-log-edit-summary-target-warning (:inherit 'warning))
+(which-func (:inherit 'font-lock-function-name-face))
+
+;; focus
+(focus-unfocused (:inherit 'shadow))
+(focus-focused nil)
+
+;; term
+(term (:inherit 'default))
+(term-bold       (:inherit 'ansi-color-bold))
+(term-underline  (:inherit 'ansi-color-underline))
+(term-fast-blink (:inherit 'ansi-color-fast-blink))
+(term-slow-blink (:inherit 'ansi-color-slow-blink))
+(term-italic     (:inherit 'ansi-color-italic))
+(term-faint      (:inherit 'ansi-color-faint))
+
+(term-color-black   (:inherit 'ansi-color-black))
+(term-color-red     (:inherit 'ansi-color-red))
+(term-color-green   (:inherit 'ansi-color-green))
+(term-color-yellow  (:inherit 'ansi-color-yellow))
+(term-color-blue    (:inherit 'ansi-color-blue))
+(term-color-magenta (:inherit 'ansi-color-magenta))
+(term-color-cyan    (:inherit 'ansi-color-cyan))
+(term-color-white   (:inherit 'ansi-color-white))
+
+(term-color-bright-black   (:inherit 'ansi-color-bright-black))
+(term-color-bright-red     (:inherit 'ansi-color-bright-red))
+(term-color-bright-green   (:inherit 'ansi-color-bright-green))
+(term-color-bright-yellow  (:inherit 'ansi-color-bright-yellow))
+(term-color-bright-blue    (:inherit 'ansi-color-bright-blue))
+(term-color-bright-magenta (:inherit 'ansi-color-bright-magenta))
+(term-color-bright-cyan    (:inherit 'ansi-color-bright-cyan))
+(term-color-bright-white   (:inherit 'ansi-color-bright-white))
+
+;; apropos
+(apropos-symbol (:inherit 'bold))
+(apropos-keybinding (:inherit 'underline))
+(apropos-property (:inherit 'font-lock-builtin-face))
+(apropos-button (:inherit ('font-lock-variable-name-face 'button)))
+(apropos-function-button (:inherit ('font-lock-function-name-face 'button)))
+(apropos-variable-button (:inherit ('font-lock-variable-name-face 'button)))
+(apropos-user-option-button (:inherit ('font-lock-variable-name-face 'button)))
+(apropos-misc-button (:inherit ('font-lock-constant-face 'button)))
+
+;; info
+(info-node (:weight 'bold :slant 'italic :foreground neutral15))
+(info-title-1 (:height 1.2 :inherit 'info-title-2))
+(info-title-2 (:height 1.2 :inherit 'info-title-3))
+(info-title-3 (:height 1.2 :inherit 'info-title-4))
+(info-title-4 (:weight 'bold :inherit 'variable-pitch))
+(info-menu-header (:weight 'bold :inherit 'variable-pitch))
+(info-menu-star (:foreground red))
+(info-xref (:inherit 'link))
+(info-xref-visited (:inherit ('link-visited 'info-xref)))
+(info-header-xref (:inherit 'info-xref))
+(info-header-node (:inherit 'info-node))
+(info-index-match (:inherit 'match))
+
+;; ess
+(ess-watch-current-block-face (:inherit 'highlight))
+(ess-bp-fringe-recover-face (:foreground dark-purple))
+(ess-bp-fringe-browser-face (:foreground neutral3))
+(ess-bp-fringe-logger-face (:foreground darker-red))
+(ess-bp-fringe-inactive-face (:foreground grey9))
+(ess-debug-blink-same-ref-face (:background neutral7))
+(ess-debug-blink-ref-not-found-face (:background dark-purple))
+(ess-debug-current-debug-line-face (:inherit 'highlight))
+(ess-tracebug-last-input-fringe-face (:overline neutral3 :foreground neutral3))
+(ess-r-control-flow-keyword-face (:inherit 'ess-keyword-face))
+(ess-keyword-face (:inherit 'font-lock-keyword-face))
+(ess-matrix-face (:inherit 'font-lock-constant-face))
+(ess-constant-face (:inherit 'font-lock-type-face))
+(ess-modifiers-face (:inherit 'font-lock-constant-face))
+(ess-paren-face (:inherit 'font-lock-constant-face))
+(ess-assignment-face (:inherit 'font-lock-constant-face))
+(ess-%op%-face (:inherit 'ess-operator-face))
+(ess-operator-face (:inherit 'font-lock-constant-face))
+(ess-numbers-face (:slant 'normal :inherit 'font-lock-type-face))
+(ess-function-call-face (:slant 'normal :inherit 'font-lock-function-name-face))
+
+;; help
+(help-key-binding (:foreground high-orange :background grey4 :box (:line-width 1 :color grey6)))
+(help-argument-name (:inherit 'italic))
+(help-for-help-header (:height 1.26))
+
+;; simple.el
+(next-error (:inherit 'region))
+(next-error-message (:extend t :inherit 'highlight))
+(separator-line (:height 0.1 :background neutral5))
+
+;; gnus
+(gnus-group-news-1-empty (:foreground lighter-cyan))
+(gnus-group-news-1 (:weight 'bold :inherit 'gnus-group-news-1-empty))
+(gnus-group-news-2-empty (:foreground lighter-cyan))
+(gnus-group-news-2 (:weight 'bold :inherit 'gnus-group-news-2-empty))
+(gnus-group-news-3-empty nil)
+(gnus-group-news-3 (:weight 'bold :inherit 'gnus-group-news-3-empty))
+(gnus-group-news-4-empty nil)
+(gnus-group-news-4 (:weight 'bold :inherit 'gnus-group-news-4-empty))
+(gnus-group-news-5-empty nil)
+(gnus-group-news-5 (:weight 'bold :inherit 'gnus-group-news-5-empty))
+(gnus-group-news-6-empty nil)
+(gnus-group-news-6 (:weight 'bold :inherit 'gnus-group-news-6-empty))
+(gnus-group-news-low-empty (:foreground lighter-cyan))
+(gnus-group-news-low (:weight 'bold :inherit 'gnus-group-news-low-empty))
+(gnus-group-mail-1-empty (:foreground lighter-cyan))
+(gnus-group-mail-1 (:weight 'bold :inherit 'gnus-group-mail-1-empty))
+(gnus-group-mail-2-empty (:foreground lighter-green))
+(gnus-group-mail-2 (:weight 'bold :inherit 'gnus-group-mail-2-empty))
+(gnus-group-mail-3-empty (:foreground lighter-green))
+(gnus-group-mail-3 (:weight 'bold :inherit 'gnus-group-mail-3-empty))
+(gnus-group-mail-low-empty (:foreground lighter-green))
+(gnus-group-mail-low (:weight 'bold :inherit 'gnus-group-mail-low-empty))
+(gnus-summary-selected (:underline t :extend t))
+(gnus-summary-cancelled (:extend t :foreground lighter-olive :background bg))
+(gnus-summary-normal-ticked (:extend t :foreground lighter-purple))
+(gnus-summary-high-ticked (:weight 'bold :inherit 'gnus-summary-normal-ticked))
+(gnus-summary-low-ticked (:slant 'italic :inherit 'gnus-summary-normal-ticked))
+(gnus-summary-normal-ancient (:extend t :foreground neutral11))
+(gnus-summary-high-ancient (:weight 'bold :inherit 'gnus-summary-normal-ancient))
+(gnus-summary-low-ancient (:slant 'italic :inherit 'gnus-summary-normal-ancient))
+(gnus-summary-normal-undownloaded (:weight 'normal :extend t :foreground cyan))
+(gnus-summary-high-undownloaded (:weight 'bold :inherit 'gnus-summary-normal-undownloaded))
+(gnus-summary-low-undownloaded (:slant 'italic :inherit 'gnus-summary-normal-undownloaded))
+(gnus-summary-normal-unread (:extend t))
+(gnus-summary-high-unread (:weight 'bold :inherit 'gnus-summary-normal-unread))
+(gnus-summary-low-unread (:slant 'italic :inherit 'gnus-summary-normal-unread))
+(gnus-summary-normal-read (:extend t :foreground lighter-green))
+(gnus-summary-high-read (:weight 'bold :inherit 'gnus-summary-normal-read))
+(gnus-summary-low-read (:slant 'italic :inherit 'gnus-summary-normal-read))
+(gnus-splash (:foreground neutral11))
+(gnus-emphasis-bold (:weight 'bold))
+(gnus-emphasis-italic (:slant 'italic))
+(gnus-emphasis-underline (:underline t))
+(gnus-emphasis-underline-bold (:weight 'bold :underline t))
+(gnus-emphasis-underline-italic (:slant 'italic :underline t))
+(gnus-emphasis-bold-italic (:weight 'bold :slant 'italic))
+(gnus-emphasis-underline-bold-italic (:weight 'bold :slant 'italic :underline t))
+(gnus-emphasis-strikethru (:strike-through t))
+(gnus-emphasis-highlight-words (:foreground lighter-olive :background bg))
+(gnus-button (:weight 'bold))
+(gnus-signature (:slant 'italic))
+(gnus-header-from (:foreground lighter-green))
+(gnus-header-subject (:foreground lighter-green))
+(gnus-header-newsgroups (:slant 'italic :foreground lighter-olive))
+(gnus-header-name (:foreground lighter-green))
+(gnus-header-content (:slant 'italic :foreground lighter-green))
+
+(line-number-major-tick (:weight 'bold :background neutral11))
+(line-number-minor-tick (:weight 'bold :background neutral8))
+
+(fill-column-indicator (:weight 'normal :slant 'normal :underline nil :overline nil :strike-through nil :box nil :inverse-video nil :stipple nil :inherit 'shadow))
+
+(nobreak-space (:underline t :inherit 'escape-glyph))
+(nobreak-hyphen (:foreground lighter-cyan))
+
+(mode-line-highlight (:box (:line-width 2 :color neutral6 :style 'released-button)))
+(mode-line-emphasis (:weight 'bold))
+(mode-line-buffer-id (:weight 'bold))
+
+(csv-separator-face (:foreground high-cyan))
+
+;; tty-menu
+(tty-menu-enabled-face (:weight 'bold :foreground lighter-olive :background neutral4))
+(tty-menu-disabled-face (:foreground neutral11 :background neutral4))
+(tty-menu-selected-face (:background red))
+
+;; show-paren
+(show-paren-match-expression (:inherit 'show-paren-match))
+(show-paren-mismatch (:foreground bg :background high-purple))
+(show-paren-match (:background low-cyan))
+
+;; completions
+(completions-group-title (:slant 'italic :inherit 'shadow))
+(completions-group-separator
+ (:strike-through t :inherit 'shadow))
+(completions-annotations (:inherit ('italic 'shadow)))
+(completions-first-difference (:inherit 'bold))
+(completions-common-part (:foreground grey15))
+
+;; tab-bar
+(tab-bar-tab (:box (:line-width 1 :style 'released-button) :inherit 'tab-bar))
+(tab-bar-tab-inactive (:background neutral11 :inherit 'tab-bar-tab))
+(tab-bar-tab-group-current (:weight 'bold :box nil :inherit 'tab-bar-tab))
+(tab-bar-tab-group-inactive (:inherit ('shadow 'tab-bar-tab-inactive)))
+(tab-bar-tab-ungrouped (:inherit ('shadow 'tab-bar-tab-inactive)))
+(tab-bar (:foreground bg :background neutral15 :inherit 'variable-pitch))
+
+;; calendar
+(calendar-today (:underline t))
+(calendar-weekday-header (:inherit 'font-lock-constant-face))
+(calendar-weekend-header (:inherit 'font-lock-comment-face))
+(calendar-month-header (:inherit 'font-lock-function-name-face))
+(holiday (:background dark-orange))
+
+;; hl-todo
+(hl-todo (:weight 'bold :foreground light-purple))
+
+;; xref
+(xref-file-header (:inherit 'compilation-info))
+(xref-line-number (:inherit 'compilation-line-number))
+(xref-match (:inherit 'match))
+
+;; outline
+(outline-1 (:inherit 'font-lock-function-name-face))
+(outline-2 (:inherit 'font-lock-variable-name-face))
+(outline-3 (:inherit 'font-lock-keyword-face))
+(outline-4 (:inherit 'font-lock-comment-face))
+(outline-5 (:inherit 'font-lock-type-face))
+(outline-6 (:inherit 'font-lock-constant-face))
+(outline-7 (:inherit 'font-lock-builtin-face))
+(outline-8 (:inherit 'font-lock-string-face))
+
+;; widget
+(widget-documentation (:foreground light-green))
+(widget-button (:weight 'bold))
+(widget-field (:extend t :background grey3))
+(widget-single-line-field (:background grey9))
+(widget-inactive (:inherit 'shadow))
+(widget-button-pressed (:foreground red))
+
+;; epa
+(epa-validity-high (:weight 'bold :foreground lighter-cyan))
+(epa-validity-medium (:slant 'italic :foreground lighter-cyan))
+(epa-validity-low (:slant 'italic))
+(epa-validity-disabled (:slant 'italic :inverse-video t))
+(epa-string (:foreground neutral15))
+(epa-mark (:weight 'bold :foreground yellow))
+(epa-field-name (:weight 'bold :foreground lighter-cyan))
+(epa-field-body (:slant 'italic :foreground lighter-cyan))
+
+;; shr
+(shr-strike-through (:strike-through t))
+(shr-link (:inherit 'link))
+(shr-selected-link (:background red :inherit 'shr-link))
+(shr-abbreviation (:underline (:style 'wave) :inherit 'underline))
+(shr-h1 (:height 1.3 :weight 'bold))
+(shr-h2 (:weight 'bold))
+(shr-h3 (:slant 'italic))
+(shr-h4 nil)
+(shr-h5 nil)
+(shr-h6 nil)
+
+;; speedbar
+(speedbar-button-face (:foreground light-green))
+(speedbar-file-face (:foreground lighter-cyan))
+(speedbar-directory-face (:foreground neutral15))
+(speedbar-tag-face (:foreground lighter-olive))
+(speedbar-selected-face (:underline t :foreground red))
+(speedbar-highlight-face (:background cyan))
+(speedbar-separator-face (:overline neutral10 :foreground neutral15 :background neutral4))
+
+;; shortdoc
+(shortdoc-heading (:height 1.3 :weight 'bold :inherit 'variable-pitch))
+(shortdoc-section (:inherit 'variable-pitch))
+
+;; window-divider
+(window-divider-first-pixel (:foreground neutral11))
+(window-divider-last-pixel (:foreground grey9))
+
+;; fonts
+(fixed-pitch (:family "SauceCodePro Nerd Font Mono" :height 100 :inherit 'default))
+(fixed-pitch-serif (:family "Monospace Serif"))
+(variable-pitch (:family "NotoSans Display Nerd Font" :height 105))
+
+;; message
+(message-header-cc (:weight 'bold :foreground lighter-green))
+(message-header-newsgroups (:weight 'bold :slant 'italic :foreground lighter-olive))
+(message-header-xheader (:foreground neutral9))
+(message-separator (:foreground neutral15))
+(message-cited-text-1 (:foreground lighter-purple))
+(message-cited-text-2 (:foreground green))
+(message-cited-text-3 (:foreground yellow))
+(message-cited-text-4 (:foreground orange))
+(message-mml (:foreground lighter-green))
+(message-signature-separator (:weight 'bold))
+
+;; vc
+(vc-state-base nil)
+(vc-up-to-date-state (:inherit 'vc-state-base))
+(vc-needs-update-state (:inherit 'vc-state-base))
+(vc-locked-state (:inherit 'vc-state-base))
+(vc-locally-added-state (:inherit 'vc-state-base))
+(vc-conflict-state (:inherit 'vc-state-base))
+(vc-removed-state (:inherit 'vc-state-base))
+(vc-missing-state (:inherit 'vc-state-base))
+(vc-edited-state (:inherit 'vc-state-base))
+
+;; eww
+(eww-form-submit (:box (:line-width 2 :style 'released-button) :foreground bg :background neutral8))
+(eww-form-file (:box (:line-width 2 :style 'released-button) :foreground bg :background neutral8))
+(eww-form-checkbox (:box (:line-width 2 :style 'released-button) :foreground bg :background neutral11))
+(eww-form-select (:box (:line-width 2 :style 'released-button) :foreground bg :background neutral11))
+(eww-form-text (:box (:line-width 1) :foreground neutral15 :background grey10))
+(eww-form-textarea (:box (:line-width 1) :foreground bg :background neutral11))
+(eww-invalid-certificate (:weight 'bold :foreground red))
+(eww-valid-certificate (:weight 'bold :foreground green))
+
+;; rst
+(rst-block (:inherit 'font-lock-keyword-face))
+(rst-external (:inherit 'font-lock-type-face))
+(rst-definition (:inherit 'font-lock-function-name-face))
+(rst-directive (:inherit 'font-lock-builtin-face))
+(rst-comment (:inherit 'font-lock-comment-face))
+(rst-emphasis1 (:inherit 'italic))
+(rst-emphasis2 (:inherit 'bold))
+(rst-literal (:inherit 'font-lock-string-face))
+(rst-reference (:inherit 'font-lock-variable-name-face))
+(rst-transition (:inherit 'font-lock-keyword-face))
+(rst-adornment (:inherit 'font-lock-keyword-face))
+(rst-level-1 (:background neutral2))
+(rst-level-2 (:background neutral3))
+(rst-level-3 (:background grey10))
+(rst-level-4 (:background grey9))
+(rst-level-5 (:background neutral7))
+(rst-level-6 (:background neutral8))
+
+;; transient
+(transient-purple (:foreground dark-purple :inherit 'transient-key))
+(transient-teal (:foreground neutral6 :inherit 'transient-key))
+(transient-pink (:foreground light-purple :inherit 'transient-key))
+(transient-amaranth (:foreground red :inherit 'transient-key))
+(transient-blue (:foreground neutral4 :inherit 'transient-key))
+(transient-red (:foreground red :inherit 'transient-key))
+(transient-separator (:extend t :background neutral11))
+(transient-higher-level (:underline t))
+(transient-disabled-suffix (:weight 'bold :foreground neutral0 :background red))
+(transient-enabled-suffix (:weight 'bold :foreground neutral0 :background lighter-green))
+(transient-inapt-suffix (:slant 'italic :inherit 'shadow))
+(transient-mismatched-key (:underline t))
+(transient-nonstandard-key (:underline t))
+(transient-unreachable-key (:inherit ('transient-key 'shadow)))
+(transient-active-infix (:inherit 'secondary-selection))
+(transient-unreachable (:inherit 'shadow))
+(transient-inactive-value (:inherit 'shadow))
+(transient-inactive-argument (:inherit 'shadow))
+(transient-value (:inherit 'font-lock-string-face))
+(transient-argument (:inherit 'font-lock-warning-face))
+(transient-key (:inherit 'font-lock-builtin-face))
+(transient-heading (:inherit 'font-lock-keyword-face))
+
+<<faces-package>>
+<<faces-elpaca>>
+<<faces-meow>>
+<<faces-custom>>
+<<faces-which-key>>
+<<faces-whitespace>>
+<<faces-git-gutter>>
+<<faces-line-number>>
+<<faces-dired>>
+<<faces-vertico>>
+<<faces-helpful>>
+<<faces-company>>
+<<faces-orderless>>
+<<faces-org>>
+<<faces-org-roam>>
+<<faces-olivetti>>
+<<faces-eshell>>
+<<faces-eglot>>
+<<faces-dape>>
+<<faces-treesit>>
+<<faces-rainbow-delimiters>>
+<<faces-sly>>
+<<faces-cc>>
+<<faces-realgud>>
+<<faces-yas>>
+<<faces-compilation>>
+<<faces-j>>
+<<faces-markdown>>
+<<faces-tuareg>>
+<<faces-nushell>>
+<<faces-sieve>>
+<<faces-minimap>>
+<<faces-magit>>
+<<faces-vterm>>
+<<faces-gnuplot>>
+<<faces-dashboard>>
+#+end_src
+
+#+name: faces-package
+#+begin_src elisp
+(package-status-avail-obso (:inherit 'package-status-incompat))
+(package-status-incompat (:inherit 'error))
+(package-status-unsigned (:inherit 'font-lock-warning-face))
+(package-status-dependency (:inherit 'package-status-installed))
+(package-status-from-source (:inherit 'font-lock-negation-char-face))
+(package-status-installed (:inherit 'font-lock-comment-face))
+(package-status-disabled (:inherit 'font-lock-warning-face))
+(package-status-held (:inherit 'font-lock-constant-face))
+(package-status-new (:inherit ('bold 'package-status-available)))
+(package-status-available (:inherit 'default))
+(package-status-external (:inherit 'package-status-built-in))
+(package-status-built-in (:inherit 'font-lock-builtin-face))
+(package-description (:inherit 'default))
+(package-name (:inherit 'link))
+(package-help-section-name (:inherit ('bold 'font-lock-function-name-face)))
+#+end_src
+
+#+name: faces-elpaca
+#+begin_src elisp
+(elpaca-finished (:weight 'bold :foreground green))
+(elpaca-busy     (:weight 'bold :foreground yellow))
+(elpaca-blocked  (:weight 'bold :foreground purple))
+(elpaca-failed   (:weight 'bold :foreground red))
+
+(elpaca-ui-marked-delete  (:weight 'bold :foreground red))
+(elpaca-ui-marked-install (:weight 'bold :foreground neutral4))
+(elpaca-ui-marked-rebuild (:weight 'bold :foreground dark-purple))
+(elpaca-ui-marked-fetch   (:weight 'bold :foreground dark-red))
+(elpaca-ui-marked-update  (:weight 'bold :foreground light-orange))
+
+(elpaca-log-highlight (:inherit 'warning))
+(elpaca-log-error     (:inherit 'error))
+(elpaca-log-info      (:inherit 'shadow))
+
+(elpaca-info-section (:weight 'bold))
+(elpaca-info-package (:height 2.0))
+#+end_src
+
+#+name: faces-meow
+#+begin_src elisp
+(meow-normal-indicator (:foreground darker-olive))
+(meow-insert-indicator (:foreground darker-red))
+(meow-beacon-indicator (:foreground darker-cyan))
+(meow-keypad-indicator (:foreground darker-purple))
+(meow-motion-indicator (:foreground darker-green))
+(meow-search-indicator (:foreground darker-yellow))
+
+(meow-normal-cursor (:background high-orange))
+(meow-insert-cursor (:background high-yellow))
+(meow-beacon-cursor (:background high-cyan))
+(meow-keypad-cursor (:background high-red))
+(meow-motion-cursor (:background high-green))
+
+(meow-beacon-fake-cursor (:extend nil :foreground bg :background purple :inherit 'region))
+(meow-unknown-cursor     (:inherit 'cursor))
+(meow-kmacro-cursor      (:underline t))
+
+(meow-region-cursor-1 (:foreground neutral12 :background olive))
+(meow-region-cursor-2 (:foreground neutral12 :background neutral8))
+(meow-region-cursor-3 (:foreground neutral12 :background grey9))
+
+(meow-keypad-cannot-display (:height 0.7 :foreground neutral15))
+(meow-beacon-fake-selection (:foreground bg :background grey10 :inherit 'region))
+(meow-search-highlight      (:inherit 'lazy-highlight))
+
+(meow-position-highlight-number   (:foreground bg :inherit 'default))
+(meow-position-highlight-number-1 (:background purple :inherit 'meow-position-highlight-number))
+(meow-position-highlight-number-2 (:background grey9 :inherit 'meow-position-highlight-number))
+(meow-position-highlight-number-3 (:background grey10 :inherit 'meow-position-highlight-number))
+
+(meow-position-highlight-reverse-number-1 (:inherit 'meow-position-highlight-number-1))
+(meow-position-highlight-reverse-number-2 (:inherit 'meow-position-highlight-number-2))
+(meow-position-highlight-reverse-number-3 (:inherit 'meow-position-highlight-number-3))
+
+(meow-cheatsheet-command   (:height 90 :inherit 'fixed-pitch))
+(meow-cheatsheet-highlight (:foreground neutral15 :inherit 'meow-cheatsheet-command))
+#+end_src
+
+#+name: faces-custom
+#+begin_src elisp
+(custom-invalid  (:foreground lighter-olive :background red))
+(custom-rogue    (:foreground lighter-purple :background neutral0))
+(custom-modified (:foreground neutral15 :background neutral4))
+(custom-set      (:foreground neutral4 :background neutral15))
+(custom-changed  (:foreground neutral15 :background neutral4))
+(custom-themed   (:foreground neutral15 :background neutral4))
+(custom-saved    (:underline t))
+
+(custom-button                  (:box (:line-width 2 :style 'released-button) :foreground neutral0 :background neutral11))
+(custom-button-mouse            (:box (:line-width 2 :style 'released-button) :foreground neutral0 :background neutral15))
+(custom-button-unraised         (:inherit 'underline))
+(custom-button-pressed          (:box (:line-width 2 :style 'pressed-button) :foreground neutral0 :background neutral11))
+(custom-button-pressed-unraised (:foreground dark-purple :inherit 'custom-button-unraised))
+
+(custom-documentation nil)
+(custom-state (:foreground dark-green))
+(custom-link (:inherit 'link))
+(custom-comment (:background neutral15))
+(custom-comment-tag (:foreground neutral1))
+(custom-visibility (:height 0.8 :inherit 'link))
+(custom-face-tag (:inherit 'custom-variable-tag))
+
+(custom-variable-obsolete (:foreground neutral4))
+(custom-variable-tag      (:weight 'bold :foreground neutral4))
+(custom-variable-button   (:weight 'bold :underline t))
+
+(custom-group-tag-1    (:height 1.2 :weight 'bold :foreground red :inherit 'variable-pitch))
+(custom-group-tag      (:height 1.2 :weight 'bold :foreground neutral4 :inherit 'variable-pitch))
+(custom-group-subtitle (:weight 'bold))
+#+end_src
+
+#+name: faces-which-key
+#+begin_src elisp
+(which-key-key-face                   (:inherit 'font-lock-constant-face))
+(which-key-separator-face             (:inherit 'font-lock-comment-face))
+(which-key-note-face                  (:inherit 'which-key-separator-face))
+(which-key-command-description-face   (:inherit 'font-lock-function-name-face))
+(which-key-local-map-description-face (:inherit 'which-key-command-description-face))
+(which-key-highlighted-command-face   (:underline t :inherit 'which-key-command-description-face))
+(which-key-group-description-face     (:inherit 'font-lock-keyword-face))
+(which-key-special-key-face           (:weight 'bold :inverse-video t :inherit 'which-key-key-face))
+(which-key-docstring-face             (:inherit 'which-key-note-face))
+#+end_src
+
+#+name: faces-whitespace
+#+begin_src elisp
+(whitespace-tab             (:background bg :foreground grey6))
+(whitespace-space           (:background bg :foreground grey6))
+(whitespace-hspace          (:background bg :foreground grey6))
+(whitespace-newline         (:background bg :foreground grey6))
+(whitespace-line            (:background bg :foreground grey6))
+(whitespace-empty           (:background bg :foreground grey6))
+(whitespace-indentation     (:background bg :foreground grey6))
+(whitespace-big-indent      (:background bg :foreground grey6))
+(whitespace-space-after-tab (:background bg :foreground grey6))
+
+(whitespace-space-before-tab       (:background high-red))
+(whitespace-missing-newline-at-eof (:background high-red))
+(whitespace-trailing               (:background high-red))
+#+end_src
+
+#+name: faces-git-gutter
+#+begin_src elisp
+(git-gutter:added     (:foreground higher-green :weight 'bold))
+(git-gutter:modified  (:foreground higher-purple :weight 'bold))
+(git-gutter:deleted   (:foreground higher-red :weight 'bold))
+(git-gutter:separator (:weight 'bold :foreground lighter-cyan :inherit 'default))
+(git-gutter:unchanged (:background lighter-olive :inherit 'default))
+#+end_src
+
+#+name: faces-line-number
+#+begin_src elisp
+(line-number              (:foreground grey10 :background bg))
+(line-number-current-line (:foreground high-orange :background grey3))
+#+end_src
+
+#+name: faces-dired
+#+begin_src elisp
+(dired-broken-symlink (:foreground grey1 :background red :bold t))
+(dired-symlink        (:foreground cyan))
+(dired-directory      (:foreground orange))
+(dired-header         (:inherit 'font-lock-type-face))
+(dired-mark           (:inherit 'font-lock-constant-face))
+(dired-marked         (:inherit 'warning))
+(dired-flagged        (:inherit 'error))
+(dired-warning        (:inherit 'font-lock-warning-face))
+(dired-perm-write     (:inherit 'font-lock-comment-delimiter-face))
+(dired-set-id         (:inherit 'font-lock-warning-face))
+(dired-special        (:inherit 'font-lock-variable-name-face))
+(dired-ignored        (:inherit 'shadow))
+#+end_src
+
+#+name: faces-vertico
+#+begin_src elisp
+(vertico-multiline       (:inherit 'shadow))
+(vertico-group-title     (:slant 'italic :inherit 'shadow))
+(vertico-group-separator (:strike-through t :inherit 'shadow))
+(vertico-current         (:extend t :inherit 'highlight))
+#+end_src
+
+#+name: faces-helpful
+#+begin_src elisp
+(helpful-heading (:weight 'bold))
+#+end_src
+
+#+name: faces-company
+#+begin_src elisp
+(company-scrollbar-bg                   (:background grey5))
+(company-scrollbar-fg                   (:background bg))
+(company-tooltip                        (:background bg))
+(company-tooltip-annotation             (:foreground high-green))
+(company-tooltip-annotation-selection   (:inherit 'company-tooltip-annotation))
+(company-tooltip-selection              (:foreground high-purple :background grey5))
+(company-tooltip-common                 (:foreground high-orange :underline t))
+(company-tooltip-common-selection       (:foreground high-orange :underline t))
+(company-tooltip-deprecated             (:strike-through t))
+(company-tooltip-search                 (:inherit 'highlight))
+(company-tooltip-search-selection       (:inherit 'highlight))
+(company-tooltip-mouse                  (:inherit 'highlight))
+(company-tooltip-quick-access           (:inherit 'company-tooltip-annotation))
+(company-tooltip-quick-access-selection (:inherit 'company-tooltip-annotation-selection))
+(company-tooltip-scrollbar-thumb        (:background bg))
+(company-tooltip-scrollbar-track        (:background grey10))
+(company-preview-common                 (:foreground grey13))
+(company-preview                        (:background high-orange))
+(company-preview-search                 (:background high-cyan))
+(company-template-field                 (:foreground grey0 :background high-yellow))
+(company-echo-common                    (:foreground red))
+(company-echo nil)
+#+end_src
+
+#+name: faces-orderless
+#+begin_src elisp
+(orderless-match-face-0 (:foreground high-cyan :bold t))
+(orderless-match-face-1 (:foreground high-olive :bold t))
+(orderless-match-face-2 (:foreground high-orange :bold t))
+(orderless-match-face-3 (:foreground high-yellow :bold t))
+#+end_src
+
+#+name: faces-org
+#+begin_src elisp
+(org-latex-and-related (:foreground lower-yellow))
+(org-document-title    (:foreground high-purple))
+(org-block-begin-line  (:foreground grey6 :background grey0))
+(org-block-end-line    (:foreground grey6 :background grey0))
+(org-special-keyword   (:foreground grey8))
+(org-document-info     (:foreground high-orange))
+(org-meta-line         (:foreground grey8))
+
+(org-level-1 (:foreground high-orange))
+(org-level-2 (:foreground high-olive))
+(org-level-3 (:foreground high-red))
+(org-level-4 (:foreground high-yellow))
+(org-level-5 (:foreground high-cyan))
+(org-level-6 (:foreground high-purple))
+(org-level-7 (:foreground high-green))
+(org-level-8 (:foreground high-orange))
+
+(org-drawer                    (:foreground grey7))
+(org-tag                       (:inherit 'org-drawer))
+(org-link                      (:underline (:style 'line :color grey5)))
+(org-done                      (:foreground grey5))
+(org-checkbox-statistics-done  (:inherit 'org-done))
+(org-doing                     (:foreground high-yellow))
+(org-todo                      (:foreground high-yellow :bold t))
+(org-checkbox-statistics-todo  (:foreground higher-purple))
+(org-table                     (:foreground grey12))
+(org-block                     (:inherit 'default))
+(org-footnote                  (:foreground yellow))
+(org-default                   (:inherit 'default))
+(org-hide                      (:foreground neutral14))
+(org-dispatcher-highlight      (:weight 'bold :foreground light-yellow :background neutral3))
+(org-property-value nil)
+(org-column                    (:weight 'normal :slant 'normal :underline nil :strike-through nil :background grey10))
+(org-column-title              (:weight 'bold :underline t :background grey10))
+(org-warning                   (:inherit 'font-lock-warning-face))
+(org-archived                  (:inherit 'shadow))
+(org-cite                      (:inherit 'link))
+(org-cite-key                  (:inherit 'link))
+(org-ellipsis                  (:underline t :foreground lighter-yellow))
+(org-target                    (:underline t))
+(org-date                      (:underline t :foreground higher-cyan))
+(org-date-selected             (:inverse-video t :foreground lighter-purple))
+(org-sexp-date                 (:foreground higher-cyan))
+(org-list-dt                   (:weight 'bold))
+(org-indent                    (:inherit 'org-hide))
+(org-headline-todo             (:foreground higher-purple))
+(org-headline-done             (:foreground higher-orange))
+(org-priority                  (:inherit 'font-lock-keyword-face))
+(org-checkbox                  (:inherit 'bold))
+(org-table-header              (:foreground bg :background neutral11 :inherit 'org-table))
+(org-formula                   (:foreground high-orange))
+(org-code                      (:inherit 'shadow))
+(org-document-info-keyword     (:inherit 'shadow))
+(org-inline-src-block          (:inherit 'org-block))
+(org-verbatim                  (:inherit 'shadow))
+(org-quote                     (:inherit 'org-block))
+(org-verse                     (:inherit 'org-block))
+(org-clock-overlay             (:foreground neutral15 :background grey9))
+(org-scheduled                 (:foreground higher-green))
+(org-scheduled-today           (:foreground higher-green))
+(org-scheduled-previously      (:foreground high-orange))
+(org-agenda-dimmed-todo-face   (:foreground neutral8))
+(org-imminent-deadline         (:inherit 'org-warning))
+(org-upcoming-deadline         (:foreground high-orange))
+(org-upcoming-distant-deadline (:inherit 'org-default))
+(org-time-grid                 (:foreground lighter-yellow))
+(org-macro                     (:inherit 'org-latex-and-related))
+(org-tag-group                 (:inherit 'org-tag))
+(org-mode-line-clock           (:inherit 'mode-line))
+(org-mode-line-clock-overrun   (:background red :inherit 'mode-line))
+
+;; org-agenda
+(org-agenda-column-dateline     (:inherit 'org-column))
+(org-agenda-done                (:foreground higher-green))
+(org-agenda-structure           (:foreground neutral9))
+(org-agenda-structure-secondary (:inherit 'org-agenda-structure))
+(org-agenda-structure-filter    (:inherit ('org-warning 'org-agenda-structure)))
+(org-agenda-date                (:inherit 'org-agenda-structure))
+(org-agenda-date-today          (:weight 'bold :slant 'italic :inherit 'org-agenda-date))
+(org-agenda-date-weekend-today  (:inherit 'org-agenda-date-today))
+(org-agenda-clocking            (:inherit 'secondary-selection))
+(org-agenda-date-weekend        (:weight 'bold :inherit 'org-agenda-date))
+(org-agenda-current-time        (:inherit 'org-time-grid))
+(org-agenda-diary               (:inherit 'default))
+(org-agenda-calendar-daterange  (:inherit 'default))
+(org-agenda-calendar-event      (:inherit 'default))
+(org-agenda-calendar-sexp       (:inherit 'default))
+(org-agenda-restriction-lock    (:background neutral1))
+(org-agenda-filter-tags         (:inherit 'mode-line))
+(org-agenda-filter-category     (:inherit 'mode-line))
+(org-agenda-filter-effort       (:inherit 'mode-line))
+(org-agenda-filter-regexp       (:inherit 'mode-line))
+#+end_src
+
+#+name: faces-org-roam
+#+begin_src elisp
+(org-roam-shielded                  (:inherit ('warning)))
+(org-roam-header-line               (:weight 'bold :extend t :foreground higher-yellow))
+(org-roam-title                     (:weight 'bold))
+(org-roam-olp                       (:foreground grey9))
+(org-roam-preview-heading           (:extend t :foreground neutral10 :background neutral4))
+(org-roam-preview-heading-highlight (:extend t :foreground neutral10 :background grey9))
+(org-roam-preview-heading-selection (:extend t :foreground light-orange :inherit 'org-roam-preview-heading-highlight))
+(org-roam-preview-region            (:extend t :inherit 'bold))
+(org-roam-dim                       (:foreground grey9))
+(org-roam-dailies-calendar-note     (:underline nil :inherit ('org-link)))
+#+end_src
+
+#+name: faces-olivetti
+#+begin_src elisp
+(olivetti-fringe (:inherit 'fringe))
+#+end_src
+
+#+name: faces-eshell
+#+begin_src elisp
+(eshell-prompt        (:foreground cyan))
+(eshell-ls-archive    (:foreground grey7))
+(eshell-ls-backup     (:foreground grey7))
+(eshell-ls-clutter    (:foreground orange :bold t))
+(eshell-ls-directory  (:foreground yellow))
+(eshell-ls-executable (:bold t))
+(eshell-ls-missing    (:foreground high-red :bold t))
+(eshell-ls-product    (:foreground low-red))
+(eshell-ls-readonly   (:foreground grey7))
+(eshell-ls-special    (:foreground high-yellow :bold t))
+(eshell-ls-symlink    (:foreground high-red))
+(eshell-ls-unreadable (:foreground high-red :bold t))
+#+end_src
+
+#+name: faces-eglot
+#+begin_src elisp
+(eglot-highlight-symbol-face           (:inherit 'bold))
+(eglot-mode-line                       (:foreground dark-purple :weight 'bold :inherit 'font-lock-constant-face))
+(eglot-diagnostic-tag-unnecessary-face (:inherit 'shadow))
+(eglot-diagnostic-tag-deprecated-face  (:strike-through t :inherit 'shadow))
+(eglot-inlay-hint-face                 (:inherit 'shadow))
+(eglot-type-hint-face                  (:inherit 'eglot-inlay-hint-face))
+(eglot-parameter-hint-face             (:inherit 'eglot-inlay-hint-face))
+#+end_src
+
+#+name: faces-dape
+#+begin_src elisp
+(dape-repl-exit-code-fail (:extend t :inherit 'compilation-mode-line-fail))
+(dape-repl-exit-code-exit (:extend t :inherit 'compilation-mode-line-exit))
+(dape-stack-trace-pointer (:extend t :inherit ('bold 'default)))
+(dape-stack-trace (:extend t))
+(dape-breakpoint-face (:inherit ('font-lock-keyword-face)))
+(dape-exception-description-face (:height 0.85 :box (:line-width -1) :inherit ('warning)))
+(dape-expression-face (:height 0.85 :box (:line-width -1) :inherit ('font-lock-warning-face)))
+(dape-log-face (:height 0.85 :box (:line-width -1) :inherit ('font-lock-doc-face)))
+#+end_src
+
+#+name: faces-treesit
+#+begin_src elisp
+(treesit-explorer-field-name nil)
+(treesit-explorer-anonymous-node (:inherit 'shadow))
+#+end_src
+
+#+name: faces-rainbow-delimiters
+#+begin_src elisp
+(rainbow-delimiters-base-face nil)
+(rainbow-delimiters-base-error-face (:foreground darker-red :inherit 'rainbow-delimiters-base-face))
+(rainbow-delimiters-unmatched-face  (:foreground high-red))
+(rainbow-delimiters-mismatched-face (:inherit 'rainbow-delimiters-unmatched-face))
+
+(rainbow-delimiters-depth-1-face  (:foreground higher-cyan))
+(rainbow-delimiters-depth-2-face  (:foreground higher-purple))
+(rainbow-delimiters-depth-3-face  (:foreground higher-green))
+(rainbow-delimiters-depth-4-face  (:foreground higher-orange))
+(rainbow-delimiters-depth-5-face  (:foreground higher-cyan))
+(rainbow-delimiters-depth-6-face  (:foreground higher-purple))
+(rainbow-delimiters-depth-7-face  (:foreground higher-green))
+(rainbow-delimiters-depth-8-face  (:foreground higher-orange))
+(rainbow-delimiters-depth-9-face  (:foreground higher-cyan))
+(rainbow-delimiters-depth-10-face (:foreground higher-purple))
+(rainbow-delimiters-depth-11-face (:foreground higher-green))
+(rainbow-delimiters-depth-12-face (:foreground higher-orange))
+#+end_src
+
+#+name: faces-sly
+#+begin_src elisp
+(sly-action-face                      (:inherit 'warning))
+(sly-part-button-face                 (:inherit 'font-lock-constant-face))
+(sly-error-face                       (:underline light-red))
+(sly-warning-face                     (:underline (:color high-orange)))
+(sly-style-warning-face               (:underline lighter-yellow))
+(sly-note-face                        (:underline lighter-yellow))
+(sly-db-condition-face                (:inherit 'error))
+(sly-db-section-face                  (:inherit 'header-line))
+(sly-db-frame-label-face              (:inherit 'shadow))
+(sly-db-restart-number-face           (:inherit 'shadow))
+(sly-db-restartable-frame-line-face   (:inherit 'font-lock-constant-face))
+(sly-mode-line                        (:weight 'bold :inherit 'font-lock-constant-face))
+(sly-apropos-symbol                   (:inherit 'sly-part-button-face))
+(sly-apropos-label                    (:inherit 'italic))
+(sly-mrepl-prompt-face                (:inherit 'font-lock-builtin-face))
+(sly-mrepl-note-face                  (:inherit 'font-lock-keyword-face))
+(sly-mrepl-output-face                (:foreground fg))
+(sly-reader-conditional-face          (:inherit 'font-lock-comment-face))
+(sly-stickers-placed-face             (:foreground bg :background neutral11))
+(sly-stickers-armed-face              (:strike-through nil :inherit 'hi-blue))
+(sly-stickers-recordings-face         (:strike-through nil :inherit 'hi-green))
+(sly-stickers-empty-face              (:strike-through nil :inherit 'hi-pink))
+(sly-stickers-exited-non-locally-face (:strike-through t :inherit 'sly-stickers-empty-face))
+
+(sly-db-non-restartable-frame-line-face nil)
+(sly-db-local-name-face nil)
+(sly-db-catch-tag-face nil)
+(sly-db-restart-face nil)
+(sly-db-frame-line-face nil)
+(sly-db-topline-face nil)
+#+end_src
+
+#+name: faces-cc
+#+begin_src elisp
+(c-nonbreakable-space-face (:background dark-red))
+#+end_src
+
+#+name: faces-realgud
+#+begin_src elisp
+(realgud-debugger-running      (:weight 'bold :foreground high-green))
+(realgud-debugger-not-running  (:inherit 'font-lock-warning-face))
+(realgud-overlay-arrow1        (:inherit 'realgud-debugger-running))
+(realgud-overlay-arrow2        (:weight 'bold :foreground grey15))
+(realgud-overlay-arrow3        (:foreground grey6))
+(realgud-bp-enabled-face       (:weight 'bold :foreground high-red))
+(realgud-bp-line-enabled-face  (:box (:color high-red)))
+(realgud-bp-disabled-face      (:weight 'bold :foreground grey10))
+(realgud-bp-line-disabled-face (:box (:color grey10)))
+(realgud-line-numbers          (:inherit 'font-lock-variable-name-face))
+(realgud-file-name             (:inherit 'font-lock-preprocessor-face))
+(realgud-backtrace-number      (:weight 'bold :foreground bg))
+#+end_src
+
+#+name: faces-yas
+#+begin_src elisp
+(yas-field-highlight-face (:inherit 'region))
+(yas--field-debug-face nil)
+#+end_src
+
+#+name: faces-compilation
+#+begin_src elisp
+(compilation-error          (:inherit 'error))
+(compilation-warning        (:inherit 'warning))
+(compilation-info           (:inherit 'success))
+(compilation-mode-line-fail (:weight 'bold :foreground red :inherit 'compilation-error))
+(compilation-mode-line-run  (:inherit 'compilation-warning))
+(compilation-mode-line-exit (:weight 'bold :foreground green :inherit 'compilation-info))
+(compilation-line-number    (:inherit 'font-lock-keyword-face))
+(compilation-column-number  (:inherit 'font-lock-doc-face))
+#+end_src
+
+#+name: faces-j
+#+begin_src elisp
+(j-verb-face        (:inherit 'font-lock-builtin-face))
+(j-adverb-face      (:inherit 'font-lock-builtin-face))
+(j-conjunction-face (:inherit 'font-lock-builtin-face))
+(j-other-face       (:inherit 'default))
+#+end_src
+
+#+name: faces-markdown
+#+begin_src elisp
+(markdown-header-face-6 (:height 1.0 :inherit 'markdown-header-face))
+(markdown-header-face-5 (:height 1.0 :inherit 'markdown-header-face))
+(markdown-header-face-4 (:height 1.0 :inherit 'markdown-header-face))
+(markdown-header-face-3 (:height 1.0 :inherit 'markdown-header-face))
+(markdown-header-face-2 (:height 1.0 :inherit 'markdown-header-face))
+(markdown-header-face-1 (:height 1.0 :inherit 'markdown-header-face))
+(markdown-header-face (:weight 'bold :inherit ('font-lock-function-name-face)))
+
+(markdown-highlighting-face (:foreground neutral0 :background lighter-olive))
+
+(markdown-html-entity-face        (:inherit 'font-lock-variable-name-face))
+(markdown-html-attr-value-face    (:inherit 'font-lock-string-face))
+(markdown-html-attr-name-face     (:inherit 'font-lock-variable-name-face))
+(markdown-html-tag-delimiter-face (:inherit 'markdown-markup-face))
+(markdown-html-tag-name-face      (:inherit 'font-lock-type-face))
+
+(markdown-hr-face (:inherit 'markdown-markup-face))
+(markdown-highlight-face (:inherit 'highlight))
+(markdown-gfm-checkbox-face (:inherit 'font-lock-builtin-face))
+(markdown-metadata-value-face (:inherit 'font-lock-string-face))
+(markdown-metadata-key-face (:inherit 'font-lock-variable-name-face))
+(markdown-math-face (:inherit 'font-lock-string-face))
+(markdown-comment-face (:inherit 'font-lock-comment-face))
+(markdown-line-break-face (:underline t :inherit 'font-lock-constant-face))
+(markdown-link-title-face (:inherit 'font-lock-comment-face))
+(markdown-plain-url-face (:inherit 'markdown-link-face))
+(markdown-url-face (:inherit 'font-lock-string-face))
+(markdown-footnote-text-face (:inherit 'font-lock-comment-face))
+(markdown-footnote-marker-face (:inherit 'markdown-markup-face))
+(markdown-reference-face (:inherit 'markdown-markup-face))
+(markdown-missing-link-face (:inherit 'font-lock-warning-face))
+(markdown-link-face (:inherit 'link))
+(markdown-language-info-face (:inherit 'font-lock-string-face))
+(markdown-language-keyword-face (:inherit 'font-lock-type-face))
+(markdown-table-face (:inherit ('markdown-code-face)))
+(markdown-pre-face (:inherit ('markdown-code-face 'font-lock-constant-face)))
+(markdown-inline-code-face (:inherit ('markdown-code-face 'font-lock-constant-face)))
+(markdown-code-face (:inherit 'fixed-pitch))
+(markdown-blockquote-face (:inherit 'font-lock-doc-face))
+(markdown-list-face (:inherit 'markdown-markup-face))
+(markdown-header-delimiter-face (:inherit 'markdown-markup-face))
+(markdown-header-rule-face (:inherit 'markdown-markup-face))
+(markdown-markup-face (:weight 'normal :slant 'normal :inherit 'shadow))
+(markdown-strike-through-face (:strike-through t))
+(markdown-bold-face (:inherit 'bold))
+(markdown-italic-face (:inherit 'italic))
+#+end_src
+
+#+name: faces-tuareg
+#+begin_src elisp
+(tuareg-font-lock-interactive-directive-face (:foreground high-cyan))
+(tuareg-font-lock-operator-face              (:foreground grey11))
+(tuareg-font-lock-governing-face             (:foreground high-red))
+(tuareg-font-double-semicolon-face           (:foreground high-red))
+(tuareg-font-lock-module-face                (:foreground high-yellow))
+#+end_src
+
+#+name: faces-nushell
+#+begin_src elisp
+(nushell-pay-attention-face (:inherit 'font-lock-builtin-face))
+#+end_src
+
+#+name: faces-sieve
+#+begin_src elisp
+(sieve-tagged-arguments (:inherit 'font-lock-operator-face))
+(sieve-test-commands    (:inherit 'font-lock-builtin-face))
+(sieve-action-commands  (:inherit 'font-lock-keyword-face))
+(sieve-control-commands (:inherit 'font-lock-keyword-face))
+#+end_src
+
+#+name: faces-minimap
+#+begin_src elisp
+(minimap-semantic-type-face       (:height 2.75 :box (:line-width 1 :color grey15) :background grey0 :inherit ('font-lock-function-name-face 'minimap-font-face)))
+(minimap-semantic-variable-face   (:height 2.75 :box (:line-width 1 :color grey15) :background grey0 :inherit ('font-lock-function-name-face 'minimap-font-face)))
+(minimap-semantic-function-face   (:height 2.75 :box (:line-width 1 :color grey15) :background grey0 :inherit ('font-lock-function-name-face 'minimap-font-face)))
+(minimap-active-region-background (:extend t :background grey3))
+(minimap-current-line-face        (:background grey6))
+(minimap-font-face                (:height 20 :inherit 'default))
+(minimap-active-region            (:background grey8))
+#+end_src
+
+#+name: faces-magit
+#+begin_src elisp
+(magit-section-highlight         (:extend t :background grey1))
+(magit-section-heading           (:weight 'bold :extend t :foreground higher-yellow))
+(magit-section-secondary-heading (:weight 'bold :extend t))
+(magit-section-heading-selection (:extend t :foreground high-orange))
+(magit-section-child-count nil)
+
+(magit-blame-date nil)
+(magit-blame-name nil)
+(magit-blame-hash nil)
+(magit-blame-summary nil)
+(magit-blame-heading   (:weight 'normal :slant 'normal :extend t :inherit 'magit-blame-highlight))
+(magit-blame-dimmed    (:weight 'normal :slant 'normal :inherit 'magit-dimmed))
+(magit-blame-margin    (:weight 'normal :slant 'normal :inherit 'magit-blame-highlight))
+(magit-blame-highlight (:extend t :foreground grey15 :background grey4))
+
+(magit-reflog-other       (:foreground higher-cyan))
+(magit-reflog-remote      (:foreground higher-cyan))
+(magit-reflog-cherry-pick (:foreground higher-green))
+(magit-reflog-rebase      (:foreground high-purple))
+(magit-reflog-reset       (:foreground red))
+(magit-reflog-checkout    (:foreground grey4))
+(magit-reflog-merge       (:foreground higher-green))
+(magit-reflog-amend       (:foreground high-purple))
+(magit-reflog-commit      (:foreground higher-green))
+
+(magit-bisect-bad  (:foreground red))
+(magit-bisect-skip (:foreground yellow))
+(magit-bisect-good (:foreground green))
+
+(magit-sequence-exec (:inherit 'magit-hash))
+(magit-sequence-onto (:inherit 'magit-sequence-done))
+(magit-sequence-done (:inherit 'magit-hash))
+(magit-sequence-drop (:foreground purple))
+(magit-sequence-head (:foreground grey9))
+(magit-sequence-part (:foreground yellow))
+(magit-sequence-stop (:foreground green))
+(magit-sequence-pick (:inherit 'default))
+
+(magit-cherry-equivalent (:foreground high-purple))
+(magit-cherry-unmatched  (:foreground higher-cyan))
+
+(magit-signature-error       (:foreground grey15))
+(magit-signature-revoked     (:foreground red))
+(magit-signature-expired-key (:inherit 'magit-signature-expired))
+(magit-signature-expired     (:foreground yellow))
+(magit-signature-untrusted   (:foreground higher-cyan))
+(magit-signature-bad         (:weight 'bold :foreground red))
+(magit-signature-good        (:foreground higher-green))
+
+(magit-keyword-squash (:inherit 'font-lock-warning-face))
+(magit-keyword        (:inherit 'font-lock-string-face))
+
+(magit-refname         (:foreground grey10))
+(magit-refname-pullreq (:inherit 'magit-refname))
+(magit-refname-wip     (:inherit 'magit-refname))
+(magit-refname-stash   (:inherit 'magit-refname))
+
+(magit-filename                (:weight 'normal))
+(magit-head                    (:inherit 'magit-branch-local))
+(magit-tag                     (:foreground yellow))
+(magit-hash                    (:foreground grey9))
+(magit-dimmed                  (:foreground grey8))
+(magit-mode-line-process-error (:inherit 'error))
+(magit-mode-line-process       (:inherit 'mode-line-emphasis))
+(magit-process-ng              (:foreground red :inherit 'magit-section-heading))
+(magit-process-ok              (:foreground higher-green :inherit 'magit-section-heading))
+
+(magit-branch-warning     (:inherit 'warning))
+(magit-branch-upstream    (:slant 'italic))
+(magit-branch-local       (:foreground grey9))
+(magit-branch-current     (:box 1 :inherit 'magit-branch-local))
+(magit-branch-remote      (:foreground high-green))
+(magit-branch-remote-head (:box 1 :inherit 'magit-branch-remote))
+
+(magit-header-line-key        (:inherit 'font-lock-builtin-face))
+(magit-header-line            (:inherit 'magit-section-heading))
+(magit-header-line-log-select (:inherit 'bold))
+(magit-log-date               (:weight 'normal :slant 'normal :foreground grey5))
+(magit-log-author             (:weight 'normal :slant 'normal :foreground low-red))
+(magit-log-graph              (:foreground grey5))
+
+(magit-diffstat-removed                (:foreground high-red))
+(magit-diffstat-added                  (:foreground green))
+(magit-diff-conflict-heading           (:inherit 'magit-diff-hunk-heading))
+(magit-diff-lines-boundary             (:extend t :inherit 'magit-diff-lines-heading))
+(magit-diff-lines-heading              (:extend t :background high-orange :inherit 'magit-diff-hunk-heading-highlight))
+(magit-diff-whitespace-warning         (:inherit 'trailing-whitespace))
+
+(magit-diff-context                    (:extend t :foreground grey7))
+(magit-diff-context-highlight          (:extend t :foreground grey9 :background grey2))
+(magit-diff-base                       (:extend t :foreground high-olive :background grey1))
+(magit-diff-base-highlight             (:extend t :foreground high-olive :background grey4))
+(magit-diff-our                        (:inherit 'magit-diff-removed))
+(magit-diff-our-highlight              (:inherit 'magit-diff-removed-highlight))
+(magit-diff-their                      (:inherit 'magit-diff-added))
+(magit-diff-their-highlight            (:inherit 'magit-diff-added-highlight))
+(magit-diff-removed                    (:extend t :foreground high-red :background lower-red))
+(magit-diff-removed-highlight          (:extend t :foreground higher-red :background lower-red))
+(magit-diff-added                      (:extend t :foreground high-green :background lower-green))
+(magit-diff-added-highlight            (:extend t :foreground higher-green :background lower-green))
+(magit-diff-revision-summary-highlight (:inherit 'magit-diff-hunk-heading-highlight))
+(magit-diff-revision-summary           (:inherit 'magit-diff-hunk-heading))
+(magit-diff-hunk-region                (:extend t :inherit 'bold))
+(magit-diff-hunk-heading               (:extend t :foreground grey6 :background grey2))
+(magit-diff-hunk-heading-highlight     (:extend t :foreground grey7 :background grey3))
+(magit-diff-hunk-heading-selection     (:extend t :foreground low-orange :inherit 'magit-diff-hunk-heading-highlight))
+(magit-diff-file-heading               (:weight 'bold :extend t))
+(magit-diff-file-heading-highlight     (:extend t :inherit 'magit-section-highlight))
+(magit-diff-file-heading-selection     (:extend t :foreground low-orange :inherit 'magit-diff-file-heading-highlight))
+#+end_src
+
+#+name: faces-vterm
+#+begin_src elisp
+(vterm-color-cyan    (:foreground high-cyan))
+(vterm-color-green   (:foreground high-olive))
+(vterm-color-blue    (:foreground high-orange))
+(vterm-color-red     (:foreground high-red))
+(vterm-color-yellow  (:foreground high-yellow))
+(vterm-color-magenta (:foreground high-purple))
+(vterm-color-black   (:inherit 'ansi-color-inverse))
+(vterm-color-white   (:inherit 'default))
+
+(vterm-color-inverse-video (:inherit 'default))
+(vterm-color-underline     (:inherit 'default))
+#+end_src
+
+#+name: faces-gnuplot
+#+begin_src elisp
+(gnuplot-prompt-face (:inherit 'comint-highlight-prompt))
+#+end_src
+
+#+name: faces-dashboard
+#+begin_src elisp
+(dashboard-items-face  (:foreground grey13))
+(dashboard-main-button (:foreground grey13 :bold t))
+(dashboard-footer-icon-face (:inherit 'dashboard-footer-face))
+(dashboard-footer-face (:inherit 'font-lock-doc-face))
+(dashboard-no-items-face (:inherit 'widget-button))
+(dashboard-heading (:inherit 'font-lock-keyword-face))
+(dashboard-navigator (:inherit 'font-lock-keyword-face))
+(dashboard-banner-logo-title (:inherit 'default))
+(dashboard-text-banner (:inherit 'font-lock-keyword-face))
+#+end_src
